@@ -5,26 +5,39 @@ describe "Static pages" do
   let(:base_title) { "Ruby on Rails Tutorial Sample App" }
   
   subject { page }
+  
+  shared_examples_for "all static pages" do
+    
+    it { should have_selector('h1', :text => heading) }
+    it { should have_selector('title', :text => full_title(page_title)) }
+    
+  end
 
   describe "Home page" do
     
     before { visit root_path }
     
-    it { should have_selector('h1', :text => 'Sample App') }
+    let(:heading) { 'Sample App' }
+    let(:page_title) { '' }
+    
+    it_should_behave_like "all static pages"
+    it { should have_selector 'title', :text => '| Home' }
+    
+    # it { should have_selector('h1', :text => 'Sample App') }
 
     # it "should have the h1 'Sample App'" do
     #   # visit root_path
     #   page.should have_selector('h1', :text => 'Sample App')
     # end
     
-    it { should have_selector('title', :text => '| Home') }
+    # it { should have_selector('title', :text => '| Home') }
     # it "should have the custom page title" do
     #   # visit root_path
     #   page.should have_selector('title',
     #                     :text => '| Home')# "#{base_title} | Home"
     # end
     
-    it { should have_selector('title', :text => full_title('')) }
+    # it { should have_selector('title', :text => full_title('')) }
     # it "should have the base title" do
     #   # visit root_path
     #   page.should have_selector('title', :text => "Ruby on Rails Tutorial Sample App")
@@ -35,12 +48,17 @@ describe "Static pages" do
     
     before { visit help_path }
     
-    it { should have_selector('h1', :text => 'Help') }
+    let(:heading) { 'Help' }
+    let(:page_title) { '' }
+    
+    it_should_behave_like "all static pages"
+    
+    # it { should have_selector('h1', :text => 'Help') }
     # it "should have the h1 'Help'" do
     #   page.should have_selector('h1', :text => 'Help')
     # end
     
-    it { should have_selector('title', :text => full_title('Help'))}
+    # it { should have_selector('title', :text => full_title('Help'))}
     # it "should have the right title" do
     #   page.should have_selector('title', :text => "#{base_title} | Help")
     # end
@@ -50,13 +68,18 @@ describe "Static pages" do
     
     before { visit about_path }
     
-    it { should have_selector('h1', :text => 'About Us') }
+    let(:heading) { 'About Us' }
+    let(:page_title) { '' }
+    
+    it_should_behave_like "all static pages"
+    
+    # it { should have_selector('h1', :text => 'About Us') }
     # it "should have the h1 'About Us" do
     #   visit about_path
     #   page.should have_selector('h1', :text => 'About Us')
     # end
     
-    it { should have_selector('title', :text => full_title("About Us")) }
+    # it { should have_selector('title', :text => full_title("About Us")) }
     # it "should have the right title" do
     #   visit about_path
     #   page.should have_selector('title', :text => "#{base_title} | About Us")
@@ -67,16 +90,36 @@ describe "Static pages" do
     
     before { visit contact_path }
     
-    it { should have_selector('h1', :text => 'Contact') }
+    let(:heading) { 'Contact' }
+    let(:page_title) { '' }
+    
+    it_should_behave_like "all static pages"
+    
+    # it { should have_selector('h1', :text => 'Contact') }
     # it "should have the h1 'Contact" do
     #   visit contact_path
     #   page.should have_selector('h1', :text => 'Contact')
     # end
     
-    it { should have_selector('title', :text => full_title('Contact')) }
+    # it { should have_selector('title', :text => full_title('Contact')) }
     # it "should have the right title" do
     #   visit contact_path
     #   page.should have_selector('title', :text => "#{base_title} | Contact")
     # end
   end
+  
+  it "should have the right links on the layout" do
+      visit root_path
+      click_link "About"
+      page.should have_selector 'title', text: full_title('About Us')
+      click_link "Help"
+      page.should # fill in
+      click_link "Contact"
+      page.should # fill in
+      click_link "Home"
+      click_link "Sign up now!"
+      page.should # fill in
+      click_link "sample app"
+      page.should # fill in
+    end
 end
